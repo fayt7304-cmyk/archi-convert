@@ -27,87 +27,58 @@
   h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
   header p { color: var(--text-secondary); margin: 0; font-size: 14px; }
 
-  .tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
   .tab {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    font-size: 14px;
-    cursor: pointer;
-    color: var(--text-secondary);
+    padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border);
+    background: var(--card); font-size: 14px; cursor: pointer; color: var(--text-secondary);
   }
-  .tab.active {
-    background: var(--accent-bg);
-    border-color: var(--accent);
-    color: var(--accent);
-    font-weight: 500;
-  }
+  .tab.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 500; }
 
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
 
-  .row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  .field label {
-    display: block;
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 6px;
-  }
+  .row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; margin-bottom: 1rem; }
+  .field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
   .field { display: flex; flex-direction: column; }
-  input[type="number"], select {
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 16px;
-    background: #fff;
-    width: 100%;
+  input[type="number"], input[type="text"], select {
+    padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
+    font-size: 16px; background: #fff; width: 100%;
   }
   .swap-btn {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    color: var(--text-secondary);
-    align-self: flex-end;
-    margin-bottom: 2px;
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+    background: #fff; cursor: pointer; font-size: 16px; color: var(--text-secondary);
+    align-self: flex-end; margin-bottom: 2px;
   }
   .swap-btn:hover { background: var(--accent-bg); color: var(--accent); }
 
-  .result {
-    background: var(--accent-bg);
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-  }
+  .result { background: var(--accent-bg); border-radius: 8px; padding: 1rem; text-align: center; }
   .result .value { font-size: 26px; font-weight: 600; color: var(--accent); }
   .result .label { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
 
-  .estimator {
-    margin-top: 0.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-  }
-  .estimator h3 { font-size: 14px; margin: 0 0 12px; color: var(--text-secondary); font-weight: 500; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+  .status { font-size: 13px; color: var(--text-secondary); margin-top: 8px; }
+  .status.working { color: var(--accent); }
+
+  /* Calculator */
+  .calc-display {
+    background: var(--accent-bg); border-radius: 8px; padding: 1rem;
+    text-align: right; font-size: 32px; font-weight: 600; color: var(--text);
+    margin-bottom: 1rem; overflow-x: auto; white-space: nowrap;
+  }
+  .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .calc-btn {
+    padding: 16px 0; border-radius: 8px; border: 1px solid var(--border);
+    background: #fff; font-size: 18px; cursor: pointer; color: var(--text);
+  }
+  .calc-btn:hover { background: var(--accent-bg); }
+  .calc-btn.op { color: var(--accent); font-weight: 600; }
+  .calc-btn.wide { grid-column: span 2; }
+
+  /* Weather */
+  .weather-main { display: flex; align-items: center; gap: 1rem; }
+  .weather-temp { font-size: 42px; font-weight: 600; color: var(--accent); }
+  .weather-details { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+  .weather-place { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
 
   footer { text-align: center; color: var(--text-secondary); font-size: 12px; margin-top: 2rem; }
 </style>
@@ -116,122 +87,45 @@
 <div class="wrap">
   <header>
     <h1>Archi Convert</h1>
-    <p>Unit conversions and material estimates for architecture work</p>
+    <p>Unit conversions, material estimates, calculator, and weather for architecture work</p>
   </header>
 
   <div class="tabs">
-    <button class="tab active" data-tab="length">Length</button>
-    <button class="tab" data-tab="area">Area</button>
-    <button class="tab" data-tab="volume">Volume</button>
+    <button class="tab active" data-tab="convert">Convert</button>
     <button class="tab" data-tab="material">Material estimate</button>
+    <button class="tab" data-tab="calculator">Calculator</button>
+    <button class="tab" data-tab="weather">Weather</button>
   </div>
 
-  <div class="card" id="length-panel">
+  <!-- CONVERT -->
+  <div class="card" id="convert-panel">
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="category-select">Category</label>
+      <select id="category-select"></select>
+    </div>
     <div class="row">
       <div class="field">
-        <label for="len-in">From</label>
-        <input type="number" id="len-in" value="1" step="any">
+        <label for="conv-in">From</label>
+        <input type="number" id="conv-in" value="1" step="any">
       </div>
-      <button class="swap-btn" id="len-swap">⇄</button>
+      <button class="swap-btn" id="conv-swap">⇄</button>
       <div class="field">
-        <label for="len-in-unit">Unit</label>
-        <select id="len-in-unit">
-          <option value="m">Meters (m)</option>
-          <option value="cm">Centimeters (cm)</option>
-          <option value="mm">Millimeters (mm)</option>
-          <option value="ft">Feet (ft)</option>
-          <option value="in">Inches (in)</option>
-          <option value="yd">Yards (yd)</option>
-        </select>
+        <label for="conv-in-unit">Unit</label>
+        <select id="conv-in-unit"></select>
       </div>
     </div>
     <div class="field" style="margin-bottom: 1rem;">
-      <label for="len-out-unit">To</label>
-      <select id="len-out-unit">
-        <option value="ft">Feet (ft)</option>
-        <option value="m">Meters (m)</option>
-        <option value="cm">Centimeters (cm)</option>
-        <option value="mm">Millimeters (mm)</option>
-        <option value="in">Inches (in)</option>
-        <option value="yd">Yards (yd)</option>
-      </select>
+      <label for="conv-out-unit">To</label>
+      <select id="conv-out-unit"></select>
     </div>
     <div class="result">
-      <div class="value" id="len-result">3.28 ft</div>
+      <div class="value" id="conv-result">—</div>
       <div class="label">Result</div>
     </div>
+    <div class="status" id="conv-status"></div>
   </div>
 
-  <div class="card" id="area-panel" style="display:none;">
-    <div class="row">
-      <div class="field">
-        <label for="area-in">From</label>
-        <input type="number" id="area-in" value="1" step="any">
-      </div>
-      <button class="swap-btn" id="area-swap">⇄</button>
-      <div class="field">
-        <label for="area-in-unit">Unit</label>
-        <select id="area-in-unit">
-          <option value="m2">Square meters (m²)</option>
-          <option value="cm2">Square centimeters (cm²)</option>
-          <option value="ft2">Square feet (ft²)</option>
-          <option value="yd2">Square yards (yd²)</option>
-          <option value="ha">Hectares (ha)</option>
-          <option value="acre">Acres</option>
-        </select>
-      </div>
-    </div>
-    <div class="field" style="margin-bottom: 1rem;">
-      <label for="area-out-unit">To</label>
-      <select id="area-out-unit">
-        <option value="ft2">Square feet (ft²)</option>
-        <option value="m2">Square meters (m²)</option>
-        <option value="cm2">Square centimeters (cm²)</option>
-        <option value="yd2">Square yards (yd²)</option>
-        <option value="ha">Hectares (ha)</option>
-        <option value="acre">Acres</option>
-      </select>
-    </div>
-    <div class="result">
-      <div class="value" id="area-result">10.76 ft²</div>
-      <div class="label">Result</div>
-    </div>
-  </div>
-
-  <div class="card" id="volume-panel" style="display:none;">
-    <div class="row">
-      <div class="field">
-        <label for="vol-in">From</label>
-        <input type="number" id="vol-in" value="1" step="any">
-      </div>
-      <button class="swap-btn" id="vol-swap">⇄</button>
-      <div class="field">
-        <label for="vol-in-unit">Unit</label>
-        <select id="vol-in-unit">
-          <option value="m3">Cubic meters (m³)</option>
-          <option value="l">Liters (L)</option>
-          <option value="ft3">Cubic feet (ft³)</option>
-          <option value="yd3">Cubic yards (yd³)</option>
-          <option value="gal">Gallons (US)</option>
-        </select>
-      </div>
-    </div>
-    <div class="field" style="margin-bottom: 1rem;">
-      <label for="vol-out-unit">To</label>
-      <select id="vol-out-unit">
-        <option value="ft3">Cubic feet (ft³)</option>
-        <option value="m3">Cubic meters (m³)</option>
-        <option value="l">Liters (L)</option>
-        <option value="yd3">Cubic yards (yd³)</option>
-        <option value="gal">Gallons (US)</option>
-      </select>
-    </div>
-    <div class="result">
-      <div class="value" id="vol-result">35.31 ft³</div>
-      <div class="label">Result</div>
-    </div>
-  </div>
-
+  <!-- MATERIAL ESTIMATE -->
   <div class="card" id="material-panel" style="display:none;">
     <h3 style="margin:0 0 12px; font-size:14px; color:var(--text-secondary); font-weight:500;">Slab / flooring material estimate</h3>
     <div class="grid2">
@@ -241,10 +135,7 @@
       </div>
       <div class="field">
         <label for="mat-width-unit">Unit</label>
-        <select id="mat-width-unit">
-          <option value="m">m</option>
-          <option value="ft">ft</option>
-        </select>
+        <select id="mat-width-unit"><option value="m">m</option><option value="ft">ft</option></select>
       </div>
     </div>
     <div class="grid2">
@@ -254,10 +145,7 @@
       </div>
       <div class="field">
         <label for="mat-length-unit">Unit</label>
-        <select id="mat-length-unit">
-          <option value="m">m</option>
-          <option value="ft">ft</option>
-        </select>
+        <select id="mat-length-unit"><option value="m">m</option><option value="ft">ft</option></select>
       </div>
     </div>
     <div class="field" style="margin-bottom: 1rem;">
@@ -265,73 +153,289 @@
       <input type="number" id="mat-waste" value="10" step="1" min="0">
     </div>
     <div class="result">
-      <div class="value" id="mat-result">12.0 m² (13.2 m² with waste)</div>
+      <div class="value" id="mat-result">12 m² (13.2 m² with waste)</div>
       <div class="label">Area needed</div>
     </div>
   </div>
 
-  <footer>Built for architecture work — conversions rounded to 2 decimals</footer>
+  <!-- CALCULATOR -->
+  <div class="card" id="calculator-panel" style="display:none;">
+    <div class="calc-display" id="calc-display">0</div>
+    <div class="calc-grid">
+      <button class="calc-btn op" data-calc="clear">C</button>
+      <button class="calc-btn op" data-calc="sqrt">√</button>
+      <button class="calc-btn op" data-calc="square">x²</button>
+      <button class="calc-btn op" data-calc="/">÷</button>
+
+      <button class="calc-btn" data-calc="7">7</button>
+      <button class="calc-btn" data-calc="8">8</button>
+      <button class="calc-btn" data-calc="9">9</button>
+      <button class="calc-btn op" data-calc="*">×</button>
+
+      <button class="calc-btn" data-calc="4">4</button>
+      <button class="calc-btn" data-calc="5">5</button>
+      <button class="calc-btn" data-calc="6">6</button>
+      <button class="calc-btn op" data-calc="-">−</button>
+
+      <button class="calc-btn" data-calc="1">1</button>
+      <button class="calc-btn" data-calc="2">2</button>
+      <button class="calc-btn" data-calc="3">3</button>
+      <button class="calc-btn op" data-calc="+">+</button>
+
+      <button class="calc-btn wide" data-calc="0">0</button>
+      <button class="calc-btn" data-calc=".">.</button>
+      <button class="calc-btn op" data-calc="=">=</button>
+    </div>
+  </div>
+
+  <!-- WEATHER -->
+  <div class="card" id="weather-panel" style="display:none;">
+    <div id="weather-content">
+      <div class="status working" id="weather-status">Getting your location...</div>
+    </div>
+  </div>
+
+  <footer>Built for architecture work — conversions rounded to 4 decimals. Currency rates and weather refresh each time you open their tab.</footer>
 </div>
 
 <script>
+  // ---------- tabs ----------
   const tabs = document.querySelectorAll('.tab');
-  const panels = { length: 'length-panel', area: 'area-panel', volume: 'volume-panel', material: 'material-panel' };
+  const panels = { convert: 'convert-panel', material: 'material-panel', calculator: 'calculator-panel', weather: 'weather-panel' };
+  let weatherLoaded = false;
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       Object.values(panels).forEach(id => document.getElementById(id).style.display = 'none');
       document.getElementById(panels[tab.dataset.tab]).style.display = 'block';
+      if (tab.dataset.tab === 'weather' && !weatherLoaded) {
+        weatherLoaded = true;
+        loadWeather();
+      }
     });
   });
 
-  const lengthToM = { m: 1, cm: 0.01, mm: 0.001, ft: 0.3048, in: 0.0254, yd: 0.9144 };
-  const areaToM2 = { m2: 1, cm2: 0.0001, ft2: 0.092903, yd2: 0.836127, ha: 10000, acre: 4046.86 };
-  const volToM3 = { m3: 1, l: 0.001, ft3: 0.0283168, yd3: 0.764555, gal: 0.00378541 };
-
-  function convert(map, val, from, to) {
-    return (val * map[from]) / map[to];
-  }
-
-  function fmt(n) {
+  function fmt(n, decimals) {
     if (!isFinite(n)) return '—';
-    return Number(n.toFixed(4)).toLocaleString(undefined, { maximumFractionDigits: 4 });
+    decimals = decimals === undefined ? 4 : decimals;
+    return Number(n.toFixed(decimals)).toLocaleString(undefined, { maximumFractionDigits: decimals });
   }
 
-  function unitLabel(sel) {
-    return sel.options[sel.selectedIndex].text.match(/\(([^)]+)\)/);
+  // ============================================================
+  // CONVERT TAB
+  // ============================================================
+
+  const categories = {
+    length: {
+      label: 'Length', base: 'm',
+      units: { m: 1, cm: 0.01, mm: 0.001, km: 1000, ft: 0.3048, in: 0.0254, yd: 0.9144, mi: 1609.344 },
+      names: { m: 'Meters (m)', cm: 'Centimeters (cm)', mm: 'Millimeters (mm)', km: 'Kilometers (km)', ft: 'Feet (ft)', in: 'Inches (in)', yd: 'Yards (yd)', mi: 'Miles (mi)' }
+    },
+    area: {
+      label: 'Area', base: 'm2',
+      units: { m2: 1, cm2: 0.0001, ft2: 0.092903, yd2: 0.836127, ha: 10000, acre: 4046.86, km2: 1000000 },
+      names: { m2: 'Square meters (m²)', cm2: 'Square centimeters (cm²)', ft2: 'Square feet (ft²)', yd2: 'Square yards (yd²)', ha: 'Hectares (ha)', acre: 'Acres', km2: 'Square kilometers (km²)' }
+    },
+    volume: {
+      label: 'Volume', base: 'm3',
+      units: { m3: 1, l: 0.001, ml: 0.000001, ft3: 0.0283168, yd3: 0.764555, gal: 0.00378541 },
+      names: { m3: 'Cubic meters (m³)', l: 'Liters (L)', ml: 'Milliliters (mL)', ft3: 'Cubic feet (ft³)', yd3: 'Cubic yards (yd³)', gal: 'Gallons (US)' }
+    },
+    angle: {
+      label: 'Angle', base: 'rad',
+      units: { rad: 1, deg: Math.PI / 180, grad: Math.PI / 200 },
+      names: { rad: 'Radians', deg: 'Degrees (°)', grad: 'Gradians' }
+    },
+    data: {
+      label: 'Data', base: 'byte',
+      units: { bit: 0.125, byte: 1, kb: 1024, mb: 1024 ** 2, gb: 1024 ** 3, tb: 1024 ** 4 },
+      names: { bit: 'Bits', byte: 'Bytes', kb: 'Kilobytes (KB)', mb: 'Megabytes (MB)', gb: 'Gigabytes (GB)', tb: 'Terabytes (TB)' }
+    },
+    energy: {
+      label: 'Energy', base: 'j',
+      units: { j: 1, kj: 1000, cal: 4.184, kcal: 4184, wh: 3600, kwh: 3600000, btu: 1055.06 },
+      names: { j: 'Joules (J)', kj: 'Kilojoules (kJ)', cal: 'Calories (cal)', kcal: 'Kilocalories (kcal)', wh: 'Watt-hours (Wh)', kwh: 'Kilowatt-hours (kWh)', btu: 'BTU' }
+    },
+    force: {
+      label: 'Force', base: 'n',
+      units: { n: 1, kn: 1000, lbf: 4.44822, kgf: 9.80665, dyn: 0.00001 },
+      names: { n: 'Newtons (N)', kn: 'Kilonewtons (kN)', lbf: 'Pound-force (lbf)', kgf: 'Kilogram-force (kgf)', dyn: 'Dynes' }
+    },
+    fuel: {
+      label: 'Fuel economy', base: 'kml', inverse: ['mpgus', 'mpguk'],
+      units: { kml: 1, l100km: 'inverse100', mpgus: 2.35215, mpguk: 2.82481 },
+      names: { kml: 'km/L', l100km: 'L/100km', mpgus: 'mpg (US)', mpguk: 'mpg (UK)' }
+    },
+    power: {
+      label: 'Power', base: 'w',
+      units: { w: 1, kw: 1000, hp: 745.7, btuh: 0.293071 },
+      names: { w: 'Watts (W)', kw: 'Kilowatts (kW)', hp: 'Horsepower (hp)', btuh: 'BTU/hour' }
+    },
+    pressure: {
+      label: 'Pressure', base: 'pa',
+      units: { pa: 1, kpa: 1000, bar: 100000, atm: 101325, psi: 6894.76, mmhg: 133.322 },
+      names: { pa: 'Pascals (Pa)', kpa: 'Kilopascals (kPa)', bar: 'Bar', atm: 'Atmospheres (atm)', psi: 'PSI', mmhg: 'mmHg' }
+    },
+    speed: {
+      label: 'Speed', base: 'ms',
+      units: { ms: 1, kmh: 0.277778, mph: 0.44704, knot: 0.514444, fts: 0.3048 },
+      names: { ms: 'Meters/second (m/s)', kmh: 'Kilometers/hour (km/h)', mph: 'Miles/hour (mph)', knot: 'Knots', fts: 'Feet/second (ft/s)' }
+    },
+    temperature: {
+      label: 'Temperature', special: true,
+      names: { c: 'Celsius (°C)', f: 'Fahrenheit (°F)', k: 'Kelvin (K)' }
+    },
+    weight: {
+      label: 'Weight / Mass', base: 'kg',
+      units: { kg: 1, g: 0.001, mg: 0.000001, ton: 1000, lb: 0.453592, oz: 0.0283495, stone: 6.35029 },
+      names: { kg: 'Kilograms (kg)', g: 'Grams (g)', mg: 'Milligrams (mg)', ton: 'Metric tons', lb: 'Pounds (lb)', oz: 'Ounces (oz)', stone: 'Stone' }
+    },
+    currency: {
+      label: 'Currency', special: 'currency',
+      names: { USD: 'US Dollar (USD)', EUR: 'Euro (EUR)', GBP: 'British Pound (GBP)', MAD: 'Moroccan Dirham (MAD)', CNY: 'Chinese Yuan (CNY)', JPY: 'Japanese Yen (JPY)', CAD: 'Canadian Dollar (CAD)', AUD: 'Australian Dollar (AUD)', CHF: 'Swiss Franc (CHF)', AED: 'UAE Dirham (AED)' }
+    }
+  };
+
+  let currencyRates = null;
+  let currencyBase = null;
+
+  const categorySelect = document.getElementById('category-select');
+  const inUnitSelect = document.getElementById('conv-in-unit');
+  const outUnitSelect = document.getElementById('conv-out-unit');
+  const convInput = document.getElementById('conv-in');
+  const convResult = document.getElementById('conv-result');
+  const convStatus = document.getElementById('conv-status');
+  const convSwap = document.getElementById('conv-swap');
+
+  Object.keys(categories).forEach(key => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = categories[key].label;
+    categorySelect.appendChild(opt);
+  });
+
+  function populateUnits(categoryKey) {
+    const cat = categories[categoryKey];
+    inUnitSelect.innerHTML = '';
+    outUnitSelect.innerHTML = '';
+    Object.keys(cat.names).forEach((u, i) => {
+      const o1 = document.createElement('option');
+      o1.value = u; o1.textContent = cat.names[u];
+      inUnitSelect.appendChild(o1);
+      const o2 = document.createElement('option');
+      o2.value = u; o2.textContent = cat.names[u];
+      outUnitSelect.appendChild(o2);
+    });
+    const keys = Object.keys(cat.names);
+    if (keys.length > 1) outUnitSelect.selectedIndex = 1;
   }
 
-  function setupConverter(prefix, map) {
-    const input = document.getElementById(prefix + '-in');
-    const inUnit = document.getElementById(prefix + '-in-unit');
-    const outUnit = document.getElementById(prefix + '-out-unit');
-    const result = document.getElementById(prefix + '-result');
-    const swap = document.getElementById(prefix + '-swap');
+  function celsiusFrom(value, unit) {
+    if (unit === 'c') return value;
+    if (unit === 'f') return (value - 32) * 5 / 9;
+    if (unit === 'k') return value - 273.15;
+  }
+  function celsiusTo(value, unit) {
+    if (unit === 'c') return value;
+    if (unit === 'f') return value * 9 / 5 + 32;
+    if (unit === 'k') return value + 273.15;
+  }
 
-    function update() {
-      const val = parseFloat(input.value) || 0;
-      const res = convert(map, val, inUnit.value, outUnit.value);
-      const label = unitLabel(outUnit);
-      result.textContent = fmt(res) + (label ? ' ' + label[1] : '');
+  function fuelToKmL(value, unit) {
+    if (unit === 'kml') return value;
+    if (unit === 'l100km') return value === 0 ? 0 : 100 / value;
+    if (unit === 'mpgus') return value / 2.35215;
+    if (unit === 'mpguk') return value / 2.82481;
+  }
+  function fuelFromKmL(value, unit) {
+    if (unit === 'kml') return value;
+    if (unit === 'l100km') return value === 0 ? 0 : 100 / value;
+    if (unit === 'mpgus') return value * 2.35215;
+    if (unit === 'mpguk') return value * 2.82481;
+  }
+
+  async function loadCurrencyRates(base) {
+    convStatus.textContent = 'Fetching live exchange rates...';
+    convStatus.classList.add('working');
+    try {
+      const resp = await fetch('https://open.er-api.com/v6/latest/' + base);
+      const data = await resp.json();
+      if (data.result !== 'success') throw new Error('Rate fetch failed');
+      currencyRates = data.rates;
+      currencyBase = base;
+      convStatus.textContent = 'Rates updated: ' + new Date(data.time_last_update_utc).toLocaleString();
+      convStatus.classList.remove('working');
+    } catch (err) {
+      convStatus.textContent = 'Could not fetch exchange rates. Check your connection and try again.';
+      convStatus.classList.remove('working');
+    }
+  }
+
+  async function updateConversion() {
+    const categoryKey = categorySelect.value;
+    const cat = categories[categoryKey];
+    const val = parseFloat(convInput.value) || 0;
+    const inUnit = inUnitSelect.value;
+    const outUnit = outUnitSelect.value;
+
+    if (categoryKey === 'temperature') {
+      const c = celsiusFrom(val, inUnit);
+      const result = celsiusTo(c, outUnit);
+      convResult.textContent = fmt(result, 2) + ' ' + cat.names[outUnit].match(/\(([^)]+)\)/)?.[1];
+      return;
     }
 
-    input.addEventListener('input', update);
-    inUnit.addEventListener('change', update);
-    outUnit.addEventListener('change', update);
-    swap.addEventListener('click', () => {
-      const a = inUnit.value, b = outUnit.value;
-      inUnit.value = b;
-      outUnit.value = a;
-      update();
-    });
-    update();
+    if (categoryKey === 'fuel') {
+      const kml = fuelToKmL(val, inUnit);
+      const result = fuelFromKmL(kml, outUnit);
+      convResult.textContent = fmt(result, 3) + ' ' + cat.names[outUnit];
+      return;
+    }
+
+    if (categoryKey === 'currency') {
+      if (!currencyRates || currencyBase !== inUnit) {
+        await loadCurrencyRates(inUnit);
+      }
+      if (currencyRates && currencyRates[outUnit] !== undefined) {
+        const result = val * currencyRates[outUnit];
+        convResult.textContent = fmt(result, 2) + ' ' + outUnit;
+      } else {
+        convResult.textContent = '—';
+      }
+      return;
+    }
+
+    // linear categories
+    const result = (val * cat.units[inUnit]) / cat.units[outUnit];
+    const label = cat.names[outUnit].match(/\(([^)]+)\)/);
+    convResult.textContent = fmt(result) + (label ? ' ' + label[1] : ' ' + cat.names[outUnit]);
   }
 
-  setupConverter('len', lengthToM);
-  setupConverter('area', areaToM2);
-  setupConverter('vol', volToM3);
+  categorySelect.addEventListener('change', () => {
+    populateUnits(categorySelect.value);
+    currencyRates = null;
+    convStatus.textContent = '';
+    updateConversion();
+  });
+  convInput.addEventListener('input', updateConversion);
+  inUnitSelect.addEventListener('change', updateConversion);
+  outUnitSelect.addEventListener('change', updateConversion);
+  convSwap.addEventListener('click', () => {
+    const a = inUnitSelect.value, b = outUnitSelect.value;
+    inUnitSelect.value = b;
+    outUnitSelect.value = a;
+    currencyRates = null;
+    updateConversion();
+  });
 
+  populateUnits('length');
+  updateConversion();
+
+  // ============================================================
+  // MATERIAL ESTIMATE TAB
+  // ============================================================
   function updateMaterial() {
     const w = parseFloat(document.getElementById('mat-width').value) || 0;
     const wUnit = document.getElementById('mat-width-unit').value;
@@ -345,14 +449,148 @@
     const withWaste = areaM2 * (1 + waste / 100);
 
     document.getElementById('mat-result').textContent =
-      fmt(areaM2) + ' m\u00b2 (' + fmt(withWaste) + ' m\u00b2 with waste)';
+      fmt(areaM2, 2) + ' m\u00b2 (' + fmt(withWaste, 2) + ' m\u00b2 with waste)';
   }
-
   ['mat-width', 'mat-width-unit', 'mat-length', 'mat-length-unit', 'mat-waste'].forEach(id => {
     document.getElementById(id).addEventListener('input', updateMaterial);
     document.getElementById(id).addEventListener('change', updateMaterial);
   });
   updateMaterial();
+
+  // ============================================================
+  // CALCULATOR TAB
+  // ============================================================
+  const calcDisplay = document.getElementById('calc-display');
+  let calcExpr = '';
+  let calcJustEvaluated = false;
+
+  document.querySelectorAll('[data-calc]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.calc;
+
+      if (key === 'clear') {
+        calcExpr = '';
+        calcDisplay.textContent = '0';
+        return;
+      }
+      if (key === 'sqrt') {
+        const val = Math.sqrt(parseFloat(calcExpr) || 0);
+        calcExpr = String(val);
+        calcDisplay.textContent = calcExpr;
+        calcJustEvaluated = true;
+        return;
+      }
+      if (key === 'square') {
+        const val = Math.pow(parseFloat(calcExpr) || 0, 2);
+        calcExpr = String(val);
+        calcDisplay.textContent = calcExpr;
+        calcJustEvaluated = true;
+        return;
+      }
+      if (key === '=') {
+        try {
+          // eslint-disable-next-line no-eval
+          const result = Function('"use strict"; return (' + calcExpr + ')')();
+          calcExpr = String(result);
+          calcDisplay.textContent = calcExpr;
+        } catch {
+          calcDisplay.textContent = 'Error';
+          calcExpr = '';
+        }
+        calcJustEvaluated = true;
+        return;
+      }
+
+      if (calcJustEvaluated && !isNaN(key)) {
+        calcExpr = '';
+        calcJustEvaluated = false;
+      } else if (calcJustEvaluated) {
+        calcJustEvaluated = false;
+      }
+
+      calcExpr += key;
+      calcDisplay.textContent = calcExpr;
+    });
+  });
+
+  // ============================================================
+  // WEATHER TAB
+  // ============================================================
+  const weatherCodeMap = {
+    0: '☀️ Clear sky', 1: '🌤️ Mostly clear', 2: '⛅ Partly cloudy', 3: '☁️ Overcast',
+    45: '🌫️ Fog', 48: '🌫️ Depositing rime fog',
+    51: '🌦️ Light drizzle', 53: '🌦️ Drizzle', 55: '🌦️ Dense drizzle',
+    61: '🌧️ Light rain', 63: '🌧️ Rain', 65: '🌧️ Heavy rain',
+    71: '🌨️ Light snow', 73: '🌨️ Snow', 75: '🌨️ Heavy snow',
+    80: '🌦️ Rain showers', 81: '🌦️ Rain showers', 82: '🌦️ Violent rain showers',
+    95: '⛈️ Thunderstorm', 96: '⛈️ Thunderstorm with hail'
+  };
+
+  async function loadWeather() {
+    const content = document.getElementById('weather-content');
+    const status = document.getElementById('weather-status');
+
+    function showWeather(lat, lon, placeName) {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m,relative_humidity_2m,apparent_temperature&timezone=auto`)
+        .then(r => r.json())
+        .then(data => {
+          const c = data.current;
+          const desc = weatherCodeMap[c.weather_code] || 'Weather code ' + c.weather_code;
+          content.innerHTML = `
+            <div class="weather-place">${placeName}</div>
+            <div class="weather-main">
+              <div class="weather-temp">${Math.round(c.temperature_2m)}°C</div>
+              <div class="weather-details">
+                ${desc}<br>
+                Feels like ${Math.round(c.apparent_temperature)}°C<br>
+                Humidity ${c.relative_humidity_2m}% · Wind ${Math.round(c.wind_speed_10m)} km/h
+              </div>
+            </div>
+          `;
+        })
+        .catch(() => {
+          content.innerHTML = '<div class="status">Could not load weather data. Check your connection and try again.</div>';
+        });
+    }
+
+    function reverseGeocodeAndShow(lat, lon) {
+      fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}`)
+        .then(r => r.json())
+        .then(data => {
+          const place = data.results && data.results[0]
+            ? [data.results[0].name, data.results[0].country].filter(Boolean).join(', ')
+            : `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+          showWeather(lat, lon, place);
+        })
+        .catch(() => showWeather(lat, lon, `${lat.toFixed(2)}, ${lon.toFixed(2)}`));
+    }
+
+    function fallbackToIp() {
+      status.textContent = 'Location permission unavailable, trying approximate location...';
+      fetch('https://ipapi.co/json/')
+        .then(r => r.json())
+        .then(data => {
+          if (data.latitude && data.longitude) {
+            reverseGeocodeAndShow(data.latitude, data.longitude);
+          } else {
+            content.innerHTML = '<div class="status">Could not determine your location.</div>';
+          }
+        })
+        .catch(() => {
+          content.innerHTML = '<div class="status">Could not determine your location.</div>';
+        });
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => reverseGeocodeAndShow(pos.coords.latitude, pos.coords.longitude),
+        () => fallbackToIp(),
+        { timeout: 8000 }
+      );
+    } else {
+      fallbackToIp();
+    }
+  }
 </script>
 </body>
 </html>
