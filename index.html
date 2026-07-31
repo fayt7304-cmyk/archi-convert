@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archi Convert — Unit converter for architecture</title>
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --text: #1c1c1a;
+    --text-secondary: #6b6a64;
+    --border: #e3e1da;
+    --accent: #185fa5;
+    --accent-bg: #e6f1fb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 2rem 1rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  header { margin-bottom: 2rem; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  header p { color: var(--text-secondary); margin: 0; font-size: 14px; }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+  .tab.active {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+  .field { display: flex; flex-direction: column; }
+  input[type="number"], select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 16px;
+    background: #fff;
+    width: 100%;
+  }
+  .swap-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-secondary);
+    align-self: flex-end;
+    margin-bottom: 2px;
+  }
+  .swap-btn:hover { background: var(--accent-bg); color: var(--accent); }
+
+  .result {
+    background: var(--accent-bg);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .result .value { font-size: 26px; font-weight: 600; color: var(--accent); }
+  .result .label { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+  .estimator {
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .estimator h3 { font-size: 14px; margin: 0 0 12px; color: var(--text-secondary); font-weight: 500; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+  footer { text-align: center; color: var(--text-secondary); font-size: 12px; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Archi Convert</h1>
+    <p>Unit conversions and material estimates for architecture work</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="length">Length</button>
+    <button class="tab" data-tab="area">Area</button>
+    <button class="tab" data-tab="volume">Volume</button>
+    <button class="tab" data-tab="material">Material estimate</button>
+  </div>
+
+  <div class="card" id="length-panel">
+    <div class="row">
+      <div class="field">
+        <label for="len-in">From</label>
+        <input type="number" id="len-in" value="1" step="any">
+      </div>
+      <button class="swap-btn" id="len-swap">⇄</button>
+      <div class="field">
+        <label for="len-in-unit">Unit</label>
+        <select id="len-in-unit">
+          <option value="m">Meters (m)</option>
+          <option value="cm">Centimeters (cm)</option>
+          <option value="mm">Millimeters (mm)</option>
+          <option value="ft">Feet (ft)</option>
+          <option value="in">Inches (in)</option>
+          <option value="yd">Yards (yd)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="len-out-unit">To</label>
+      <select id="len-out-unit">
+        <option value="ft">Feet (ft)</option>
+        <option value="m">Meters (m)</option>
+        <option value="cm">Centimeters (cm)</option>
+        <option value="mm">Millimeters (mm)</option>
+        <option value="in">Inches (in)</option>
+        <option value="yd">Yards (yd)</option>
+      </select>
+    </div>
+    <div class="result">
+      <div class="value" id="len-result">3.28 ft</div>
+      <div class="label">Result</div>
+    </div>
+  </div>
+
+  <div class="card" id="area-panel" style="display:none;">
+    <div class="row">
+      <div class="field">
+        <label for="area-in">From</label>
+        <input type="number" id="area-in" value="1" step="any">
+      </div>
+      <button class="swap-btn" id="area-swap">⇄</button>
+      <div class="field">
+        <label for="area-in-unit">Unit</label>
+        <select id="area-in-unit">
+          <option value="m2">Square meters (m²)</option>
+          <option value="cm2">Square centimeters (cm²)</option>
+          <option value="ft2">Square feet (ft²)</option>
+          <option value="yd2">Square yards (yd²)</option>
+          <option value="ha">Hectares (ha)</option>
+          <option value="acre">Acres</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="area-out-unit">To</label>
+      <select id="area-out-unit">
+        <option value="ft2">Square feet (ft²)</option>
+        <option value="m2">Square meters (m²)</option>
+        <option value="cm2">Square centimeters (cm²)</option>
+        <option value="yd2">Square yards (yd²)</option>
+        <option value="ha">Hectares (ha)</option>
+        <option value="acre">Acres</option>
+      </select>
+    </div>
+    <div class="result">
+      <div class="value" id="area-result">10.76 ft²</div>
+      <div class="label">Result</div>
+    </div>
+  </div>
+
+  <div class="card" id="volume-panel" style="display:none;">
+    <div class="row">
+      <div class="field">
+        <label for="vol-in">From</label>
+        <input type="number" id="vol-in" value="1" step="any">
+      </div>
+      <button class="swap-btn" id="vol-swap">⇄</button>
+      <div class="field">
+        <label for="vol-in-unit">Unit</label>
+        <select id="vol-in-unit">
+          <option value="m3">Cubic meters (m³)</option>
+          <option value="l">Liters (L)</option>
+          <option value="ft3">Cubic feet (ft³)</option>
+          <option value="yd3">Cubic yards (yd³)</option>
+          <option value="gal">Gallons (US)</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="vol-out-unit">To</label>
+      <select id="vol-out-unit">
+        <option value="ft3">Cubic feet (ft³)</option>
+        <option value="m3">Cubic meters (m³)</option>
+        <option value="l">Liters (L)</option>
+        <option value="yd3">Cubic yards (yd³)</option>
+        <option value="gal">Gallons (US)</option>
+      </select>
+    </div>
+    <div class="result">
+      <div class="value" id="vol-result">35.31 ft³</div>
+      <div class="label">Result</div>
+    </div>
+  </div>
+
+  <div class="card" id="material-panel" style="display:none;">
+    <h3 style="margin:0 0 12px; font-size:14px; color:var(--text-secondary); font-weight:500;">Slab / flooring material estimate</h3>
+    <div class="grid2">
+      <div class="field">
+        <label for="mat-width">Width</label>
+        <input type="number" id="mat-width" value="4" step="any">
+      </div>
+      <div class="field">
+        <label for="mat-width-unit">Unit</label>
+        <select id="mat-width-unit">
+          <option value="m">m</option>
+          <option value="ft">ft</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="mat-length">Length</label>
+        <input type="number" id="mat-length" value="3" step="any">
+      </div>
+      <div class="field">
+        <label for="mat-length-unit">Unit</label>
+        <select id="mat-length-unit">
+          <option value="m">m</option>
+          <option value="ft">ft</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="mat-waste">Waste allowance (%)</label>
+      <input type="number" id="mat-waste" value="10" step="1" min="0">
+    </div>
+    <div class="result">
+      <div class="value" id="mat-result">12.0 m² (13.2 m² with waste)</div>
+      <div class="label">Area needed</div>
+    </div>
+  </div>
+
+  <footer>Built for architecture work — conversions rounded to 2 decimals</footer>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = { length: 'length-panel', area: 'area-panel', volume: 'volume-panel', material: 'material-panel' };
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      Object.values(panels).forEach(id => document.getElementById(id).style.display = 'none');
+      document.getElementById(panels[tab.dataset.tab]).style.display = 'block';
+    });
+  });
+
+  const lengthToM = { m: 1, cm: 0.01, mm: 0.001, ft: 0.3048, in: 0.0254, yd: 0.9144 };
+  const areaToM2 = { m2: 1, cm2: 0.0001, ft2: 0.092903, yd2: 0.836127, ha: 10000, acre: 4046.86 };
+  const volToM3 = { m3: 1, l: 0.001, ft3: 0.0283168, yd3: 0.764555, gal: 0.00378541 };
+
+  function convert(map, val, from, to) {
+    return (val * map[from]) / map[to];
+  }
+
+  function fmt(n) {
+    if (!isFinite(n)) return '—';
+    return Number(n.toFixed(4)).toLocaleString(undefined, { maximumFractionDigits: 4 });
+  }
+
+  function unitLabel(sel) {
+    return sel.options[sel.selectedIndex].text.match(/\(([^)]+)\)/);
+  }
+
+  function setupConverter(prefix, map) {
+    const input = document.getElementById(prefix + '-in');
+    const inUnit = document.getElementById(prefix + '-in-unit');
+    const outUnit = document.getElementById(prefix + '-out-unit');
+    const result = document.getElementById(prefix + '-result');
+    const swap = document.getElementById(prefix + '-swap');
+
+    function update() {
+      const val = parseFloat(input.value) || 0;
+      const res = convert(map, val, inUnit.value, outUnit.value);
+      const label = unitLabel(outUnit);
+      result.textContent = fmt(res) + (label ? ' ' + label[1] : '');
+    }
+
+    input.addEventListener('input', update);
+    inUnit.addEventListener('change', update);
+    outUnit.addEventListener('change', update);
+    swap.addEventListener('click', () => {
+      const a = inUnit.value, b = outUnit.value;
+      inUnit.value = b;
+      outUnit.value = a;
+      update();
+    });
+    update();
+  }
+
+  setupConverter('len', lengthToM);
+  setupConverter('area', areaToM2);
+  setupConverter('vol', volToM3);
+
+  function updateMaterial() {
+    const w = parseFloat(document.getElementById('mat-width').value) || 0;
+    const wUnit = document.getElementById('mat-width-unit').value;
+    const l = parseFloat(document.getElementById('mat-length').value) || 0;
+    const lUnit = document.getElementById('mat-length-unit').value;
+    const waste = parseFloat(document.getElementById('mat-waste').value) || 0;
+
+    const wM = wUnit === 'ft' ? w * 0.3048 : w;
+    const lM = lUnit === 'ft' ? l * 0.3048 : l;
+    const areaM2 = wM * lM;
+    const withWaste = areaM2 * (1 + waste / 100);
+
+    document.getElementById('mat-result').textContent =
+      fmt(areaM2) + ' m\u00b2 (' + fmt(withWaste) + ' m\u00b2 with waste)';
+  }
+
+  ['mat-width', 'mat-width-unit', 'mat-length', 'mat-length-unit', 'mat-waste'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateMaterial);
+    document.getElementById(id).addEventListener('change', updateMaterial);
+  });
+  updateMaterial();
+</script>
+</body>
+</html>
