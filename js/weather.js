@@ -17,7 +17,8 @@ function weatherDesc(code) {
 }
 
 function initWeather() {
-  document.getElementById('weather-check-btn').addEventListener('click', loadWeather);
+  // Weather now loads automatically the first time the Weather tab
+  // is opened (wired up in main.js), no button needed here.
 }
 
 function loadWeather() {
@@ -76,7 +77,13 @@ function loadWeather() {
     }).join('');
 
     content.innerHTML = `
-      <div class="weather-place">${placeName}</div>
+      <div class="weather-place">${placeName}
+        <a href="https://www.google.com/search?q=${encodeURIComponent('weather in ' + placeName)}"
+           target="_blank" rel="noopener"
+           style="margin-left:10px; font-size:12px; color:var(--accent); text-decoration:none;">
+          Open on Google Weather ↗
+        </a>
+      </div>
       <div class="weather-main">
         <div class="weather-temp">${Math.round(c.temperature_2m)}°C</div>
         <div class="weather-details">
