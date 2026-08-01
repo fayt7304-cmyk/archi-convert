@@ -20,3 +20,4 @@ initConverter();
 initMaterialEstimate();
 initCalculator();
 initWeather();
+initTheme();
