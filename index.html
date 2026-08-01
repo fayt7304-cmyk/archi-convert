@@ -5,12 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Universal Converter — Units, currency, calculator, weather</title>
 <link rel="stylesheet" href="style.css">
+<script>
+  // Applied before first paint so there's no flash of the wrong theme.
+  (function () {
+    const saved = localStorage.getItem('theme-preference') || 'system';
+    const resolved = saved === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : saved;
+    document.documentElement.dataset.theme = resolved;
+  })();
+</script>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Universal Converter</h1>
-    <p>Unit conversions, material estimates, calculator, and weather — all in one place</p>
+    <div>
+      <h1>Universal Converter</h1>
+      <p>Unit conversions, material estimates, calculator, and weather — all in one place</p>
+    </div>
+    <button id="theme-toggle" type="button"></button>
   </header>
 
   <div class="tabs">
@@ -182,11 +195,8 @@
 
   <!-- WEATHER -->
   <div class="card" id="weather-panel" style="display:none;">
-    <div class="graph-controls" style="margin-bottom: 1.25rem;">
-      <button class="primary" id="weather-check-btn">Check weather</button>
-    </div>
     <div id="weather-content">
-      <div class="status">Click "Check weather" to load current conditions for your location.</div>
+      <div class="status working">Getting your location...</div>
     </div>
   </div>
 
@@ -197,6 +207,7 @@
 <script src="js/material.js"></script>
 <script src="js/calculator.js"></script>
 <script src="js/weather.js"></script>
+<script src="js/theme.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

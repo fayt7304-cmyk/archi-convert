@@ -168,6 +168,11 @@ function initCalculator() {
       return;
     }
 
+    const rootStyle = getComputedStyle(document.documentElement);
+    const gridColor = rootStyle.getPropertyValue('--border').trim() || '#e3e1da';
+    const axisColor = rootStyle.getPropertyValue('--text-secondary').trim() || '#6b6a64';
+    const curveColor = rootStyle.getPropertyValue('--accent').trim() || '#185fa5';
+
     const xToPx = (x) => (x + range) / (2 * range) * w;
     const yToPx = (y, yRange) => h / 2 - (y / yRange) * (h / 2) * 0.9;
 
@@ -183,7 +188,7 @@ function initCalculator() {
     const yRange = maxAbsY * 1.1;
 
     // gridlines
-    ctx.strokeStyle = '#e3e1da';
+    ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
     for (let gx = -range; gx <= range; gx += range / 5) {
       const px = xToPx(gx);
@@ -195,13 +200,13 @@ function initCalculator() {
     }
 
     // axes
-    ctx.strokeStyle = '#6b6a64';
+    ctx.strokeStyle = axisColor;
     ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(xToPx(0), 0); ctx.lineTo(xToPx(0), h); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0, yToPx(0, yRange)); ctx.lineTo(w, yToPx(0, yRange)); ctx.stroke();
 
     // curve
-    ctx.strokeStyle = '#185fa5';
+    ctx.strokeStyle = curveColor;
     ctx.lineWidth = 2;
     ctx.beginPath();
     let started = false;
