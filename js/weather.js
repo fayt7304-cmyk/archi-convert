@@ -121,10 +121,21 @@ function loadWeather() {
       .then(data => {
         const place = data.results && data.results[0]
           ? [data.results[0].name, data.results[0].country].filter(Boolean).join(', ')
-          : `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+          : null;
+        if (!place) throw new Error('No result');
         showWeather(lat, lon, place);
       })
-      .catch(() => showWeather(lat, lon, `${lat.toFixed(2)}, ${lon.toFixed(2)}`));
+      .catch(() => {
+        // Fallback to a different provider (some ad blockers flag
+        // geocoding-api.open-meteo.com; this one uses a different domain).
+        fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
+          .then(r => r.json())
+          .then(data => {
+            const place = [data.city || data.locality, data.countryName].filter(Boolean).join(', ');
+            showWeather(lat, lon, place || `${lat.toFixed(2)}, ${lon.toFixed(2)}`);
+          })
+          .catch(() => showWeather(lat, lon, `${lat.toFixed(2)}, ${lon.toFixed(2)}`));
+      });
   }
 
   function tryIpapi() {

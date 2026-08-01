@@ -66,11 +66,11 @@ header p { color: var(--text-secondary); margin: 0; font-size: 14px; }
 .field { display: flex; flex-direction: column; }
 input[type="number"], input[type="text"], select {
   padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
-  font-size: 16px; background: #fff; width: 100%;
+  font-size: 16px; background: var(--card); width: 100%;
 }
 .swap-btn {
   width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
-  background: #fff; cursor: pointer; font-size: 16px; color: var(--text-secondary);
+  background: var(--card); cursor: pointer; font-size: 16px; color: var(--text-secondary);
   align-self: flex-end; margin-bottom: 2px;
 }
 .swap-btn:hover { background: var(--accent-bg); color: var(--accent); }
@@ -101,7 +101,7 @@ button.primary:hover { opacity: 0.9; }
 .calc-grid.scientific { grid-template-columns: repeat(5, 1fr); }
 .calc-btn {
   padding: 14px 0; border-radius: 8px; border: 1px solid var(--border);
-  background: #fff; font-size: 16px; cursor: pointer; color: var(--text);
+  background: var(--card); font-size: 16px; cursor: pointer; color: var(--text);
 }
 .calc-btn:hover { background: var(--accent-bg); }
 .calc-btn.op { color: var(--accent); font-weight: 600; }
